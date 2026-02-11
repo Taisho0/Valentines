@@ -7,7 +7,34 @@ const Invitation = () => {
     const [showModal, setShowModal] = useState(false);
     const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
     const [hearts, setHearts] = useState([]);
+    
+    // Heart-catching game state
+    const [gameActive, setGameActive] = useState(true);
+    const [gameScore, setGameScore] = useState(0);
+    const [fallingHearts, setFallingHearts] = useState([]);
+    const [gameCompleted, setGameCompleted] = useState(false);
+    
+    // Slideshow state
+    const [showSlideshow, setShowSlideshow] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
+    
+    // Countdown timer state
+    const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
+    // Reasons for the slideshow
+    const reasons = [
+        "Your smile lights up my world ✨",
+        "You make every day special 🌟",
+        "Your laugh is my favorite sound 😊",
+        "You understand me like no one else 💫",
+        "Every moment with you is magical 🎭",
+        "You make me a better person 🌱",
+        "Your kindness inspires me daily 🌈",
+        "You're my best friend and soulmate 💕",
+        "Your presence brings me peace 🕊️",
+        "I fall for you more every day 💖"
+    ];
+    
     // Generate floating hearts on mount
     useEffect(() => {
         const heartArray = Array.from({ length: 15 }, (_, i) => ({
@@ -19,32 +46,116 @@ const Invitation = () => {
         }));
         setHearts(heartArray);
     }, []);
+    
+    // Heart-catching game: Generate falling hearts
+    useEffect(() => {
+        if (gameActive && !gameCompleted) {
+            const interval = setInterval(() => {
+                const newHeart = {
+                    id: Date.now() + Math.random(),
+                    left: Math.random() * 90 + 5,
+                    speed: Math.random() * 3 + 2,
+                    size: Math.random() * 20 + 30
+                };
+                setFallingHearts(prev => [...prev, newHeart]);
+            }, 1000);
+            
+            return () => clearInterval(interval);
+        }
+    }, [gameActive, gameCompleted]);
+    
+    // Remove hearts that fall off screen
+    useEffect(() => {
+        if (gameActive && !gameCompleted) {
+            const interval = setInterval(() => {
+                setFallingHearts(prev => 
+                    prev.filter(heart => {
+                        const element = document.getElementById(`falling-heart-${heart.id}`);
+                        if (element) {
+                            const rect = element.getBoundingClientRect();
+                            return rect.top < window.innerHeight;
+                        }
+                        return false;
+                    })
+                );
+            }, 100);
+            
+            return () => clearInterval(interval);
+        }
+    }, [gameActive, gameCompleted]);
+    
+    // Check if game is completed
+    useEffect(() => {
+        if (gameScore >= 10 && !gameCompleted) {
+            setGameCompleted(true);
+            setTimeout(() => {
+                setGameActive(false);
+            }, 500);
+        }
+    }, [gameScore, gameCompleted]);
+    
+    // Countdown timer effect
+    useEffect(() => {
+        const calculateCountdown = () => {
+            const targetDate = new Date('2026-02-14T19:00:00');
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                
+                setCountdown({ days, hours, minutes, seconds });
+            }
+        };
+        
+        calculateCountdown();
+        const interval = setInterval(calculateCountdown, 1000);
+        
+        return () => clearInterval(interval);
+    }, []);
+    
+    // Slideshow auto-play
+    useEffect(() => {
+        if (showSlideshow) {
+            const interval = setInterval(() => {
+                setCurrentSlide(prev => (prev + 1) % reasons.length);
+            }, 3000);
+            
+            return () => clearInterval(interval);
+        }
+    }, [showSlideshow, reasons.length]);
 
     const handleClickYes = () => {
         setIsEnvelopeOpen(true);
         setTimeout(() => {
-            setShowModal(true);
-            // Heart burst confetti
-            const count = 200;
-            const defaults = {
-                origin: { y: 0.7 },
-                shapes: ['circle'],
-                colors: ['#ff0844', '#ffb199', '#ffffff', '#ffd700']
-            };
+            setShowSlideshow(true);
+            setTimeout(() => {
+                setShowModal(true);
+                // Heart burst confetti
+                const count = 200;
+                const defaults = {
+                    origin: { y: 0.7 },
+                    shapes: ['circle'],
+                    colors: ['#ff0844', '#ffb199', '#ffffff', '#ffd700']
+                };
 
-            function fire(particleRatio, opts) {
-                confetti({
-                    ...defaults,
-                    ...opts,
-                    particleCount: Math.floor(count * particleRatio)
-                });
-            }
+                function fire(particleRatio, opts) {
+                    confetti({
+                        ...defaults,
+                        ...opts,
+                        particleCount: Math.floor(count * particleRatio)
+                    });
+                }
 
-            fire(0.25, { spread: 26, startVelocity: 55 });
-            fire(0.2, { spread: 60 });
-            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-            fire(0.1, { spread: 120, startVelocity: 45 });
+                fire(0.25, { spread: 26, startVelocity: 55 });
+                fire(0.2, { spread: 60 });
+                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+                fire(0.1, { spread: 120, startVelocity: 45 });
+            }, 2000);
         }, 600);
     };
 
@@ -54,9 +165,84 @@ const Invitation = () => {
             setYesButtonSize(prev => prev * 1.15);
         }
     };
+    
+    const catchHeart = (heartId) => {
+        setFallingHearts(prev => prev.filter(h => h.id !== heartId));
+        setGameScore(prev => prev + 1);
+    };
+    
+    const skipGame = () => {
+        setGameActive(false);
+        setGameCompleted(true);
+        setGameScore(10);
+    };
+    
+    const nextSlide = () => {
+        setCurrentSlide(prev => (prev + 1) % reasons.length);
+    };
+    
+    const prevSlide = () => {
+        setCurrentSlide(prev => (prev - 1 + reasons.length) % reasons.length);
+    };
 
     return (
         <div className='relative w-full min-h-screen flex items-center justify-center p-6 overflow-hidden bg-gradient-to-br from-rose-900 via-pink-800 to-red-900'>
+            {/* Heart-Catching Game Overlay */}
+            {gameActive && (
+                <div className='fixed inset-0 z-50 bg-gradient-to-br from-rose-900 via-pink-800 to-red-900 flex flex-col items-center justify-center'>
+                    {/* Game Instructions and Score */}
+                    <div className='text-center mb-8 z-10'>
+                        <h2 className='font-aegean text-4xl md:text-6xl text-white mb-4 animate-pulse'>
+                            Catch the Hearts! 💝
+                        </h2>
+                        <p className='text-2xl md:text-3xl text-pink-200 font-bold mb-2'>
+                            ❤️ {gameScore}/10
+                        </p>
+                        <p className='text-lg md:text-xl text-pink-300'>
+                            Click the falling hearts to unlock your invitation!
+                        </p>
+                    </div>
+                    
+                    {/* Falling Hearts Container */}
+                    <div className='absolute inset-0 overflow-hidden'>
+                        {fallingHearts.map(heart => (
+                            <div
+                                key={heart.id}
+                                id={`falling-heart-${heart.id}`}
+                                onClick={() => catchHeart(heart.id)}
+                                className='absolute cursor-pointer hover:scale-125 transition-transform animate-fall-heart'
+                                style={{
+                                    left: `${heart.left}%`,
+                                    fontSize: `${heart.size}px`,
+                                    animation: `fall-heart ${heart.speed}s linear forwards`,
+                                    top: '-50px'
+                                }}
+                            >
+                                ❤️
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {/* Skip Button */}
+                    <button
+                        onClick={skipGame}
+                        className='fixed bottom-8 right-8 z-20 px-6 py-3 bg-white/20 hover:bg-white/30 text-white rounded-full backdrop-blur-sm transition-all duration-300 text-sm'
+                    >
+                        Skip Game →
+                    </button>
+                    
+                    {/* Game completion animation */}
+                    {gameCompleted && (
+                        <div className='fixed inset-0 flex items-center justify-center z-30 bg-black/50 backdrop-blur-sm animate-fadeIn'>
+                            <div className='text-center animate-scaleIn'>
+                                <div className='text-9xl mb-4 animate-heartbeat'>💖</div>
+                                <p className='text-4xl text-white font-bold'>You did it!</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+            
             {/* Animated gradient overlay */}
             <div className='absolute inset-0 bg-gradient-to-br from-pink-500/20 via-transparent to-red-500/20 animate-pulse-slow' />
             
@@ -101,10 +287,43 @@ const Invitation = () => {
                             </p>
                         </div>
 
-                        <div className='bg-white/60 backdrop-blur-sm rounded-2xl p-6 mb-10 border-2 border-red-200'>
+                        <div className='bg-white/60 backdrop-blur-sm rounded-2xl p-6 mb-6 border-2 border-red-200'>
                             <p className='text-rose-900 text-center text-sm md:text-base font-medium tracking-wide'>
                                 📅 February 14, 2026 • 7:00 PM
                             </p>
+                        </div>
+                        
+                        {/* Countdown Timer */}
+                        <div className='bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm rounded-2xl p-6 mb-10 border-2 border-red-300'>
+                            <p className='text-rose-900 text-center text-xs md:text-sm font-semibold mb-3 uppercase tracking-wider'>
+                                ⏰ Time Until Our Date
+                            </p>
+                            <div className='flex justify-center gap-2 md:gap-4'>
+                                <div className='flex flex-col items-center'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                        <span className='text-2xl md:text-4xl font-bold text-red-600'>{countdown.days}</span>
+                                    </div>
+                                    <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Days</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                        <span className='text-2xl md:text-4xl font-bold text-pink-600'>{countdown.hours}</span>
+                                    </div>
+                                    <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Hours</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                        <span className='text-2xl md:text-4xl font-bold text-red-500'>{countdown.minutes}</span>
+                                    </div>
+                                    <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Mins</span>
+                                </div>
+                                <div className='flex flex-col items-center'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                        <span className='text-2xl md:text-4xl font-bold text-pink-500'>{countdown.seconds}</span>
+                                    </div>
+                                    <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Secs</span>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Buttons */}
@@ -145,6 +364,73 @@ const Invitation = () => {
                 </div>
             </div>
 
+            {/* "Reasons I Love You" Slideshow */}
+            {showSlideshow && (
+                <div className="fixed inset-0 z-40 flex items-center justify-center p-6 bg-black/60 backdrop-blur-lg animate-fadeIn">
+                    <div className="bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 p-8 md:p-12 rounded-[2rem] shadow-2xl max-w-2xl w-full relative overflow-hidden border-4 border-red-300">
+                        {/* Decorative hearts */}
+                        <div className='absolute top-4 left-4 text-3xl animate-pulse'>💕</div>
+                        <div className='absolute top-4 right-4 text-3xl animate-pulse' style={{ animationDelay: '0.5s' }}>💕</div>
+                        <div className='absolute bottom-4 left-4 text-3xl animate-pulse' style={{ animationDelay: '1s' }}>💕</div>
+                        <div className='absolute bottom-4 right-4 text-3xl animate-pulse' style={{ animationDelay: '1.5s' }}>💕</div>
+                        
+                        <div className='relative z-10'>
+                            <h3 className='font-aegean text-4xl md:text-5xl text-center bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-8'>
+                                Reasons I Love You
+                            </h3>
+                            
+                            {/* Slideshow content */}
+                            <div className='relative h-40 md:h-48 flex items-center justify-center mb-8'>
+                                {reasons.map((reason, index) => (
+                                    <div
+                                        key={index}
+                                        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-1000 ${
+                                            index === currentSlide ? 'opacity-100' : 'opacity-0'
+                                        }`}
+                                    >
+                                        <div className='bg-white/80 rounded-2xl p-8 shadow-xl border-2 border-red-200 text-center'>
+                                            <p className='text-xl md:text-3xl text-rose-800 font-light'>
+                                                {reason}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {/* Navigation arrows */}
+                            <div className='flex justify-center gap-6 mb-6'>
+                                <button
+                                    onClick={prevSlide}
+                                    className='w-12 h-12 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110'
+                                >
+                                    ←
+                                </button>
+                                <div className='flex items-center gap-2'>
+                                    {reasons.map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                                index === currentSlide ? 'bg-red-500 w-6' : 'bg-red-300'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                                <button
+                                    onClick={nextSlide}
+                                    className='w-12 h-12 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-all duration-300 shadow-lg hover:scale-110'
+                                >
+                                    →
+                                </button>
+                            </div>
+                            
+                            <p className='text-center text-sm text-rose-600 mb-4'>
+                                Slide {currentSlide + 1} of {reasons.length}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+            
             {/* Success Modal - Love Letter */}
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-lg animate-fadeIn">
