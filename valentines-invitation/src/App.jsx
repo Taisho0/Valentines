@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Invitation from './pages/Invitation'
+import Invitation from './Pages/Invitation'
 function App() {
 
   return (
