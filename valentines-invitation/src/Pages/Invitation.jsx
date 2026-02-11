@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import confetti from 'canvas-confetti';
 
+// Reasons for the slideshow
+const reasons = [
+    "Your smile lights up my world ✨",
+    "You make every day special 🌟",
+    "Your laugh is my favorite sound 😊",
+    "You understand me like no one else 💫",
+    "Every moment with you is magical 🎭",
+    "You make me a better person 🌱",
+    "Your kindness inspires me daily 🌈",
+    "You're my best friend and soulmate 💕",
+    "Your presence brings me peace 🕊️",
+    "I fall for you more every day 💖"
+];
+
 const Invitation = () => {
     const [noButtonSize, setNoButtonSize] = useState(1);
     const [yesButtonSize, setYesButtonSize] = useState(1);
@@ -20,20 +34,6 @@ const Invitation = () => {
     
     // Countdown timer state
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-    // Reasons for the slideshow
-    const reasons = [
-        "Your smile lights up my world ✨",
-        "You make every day special 🌟",
-        "Your laugh is my favorite sound 😊",
-        "You understand me like no one else 💫",
-        "Every moment with you is magical 🎭",
-        "You make me a better person 🌱",
-        "Your kindness inspires me daily 🌈",
-        "You're my best friend and soulmate 💕",
-        "Your presence brings me peace 🕊️",
-        "I fall for you more every day 💖"
-    ];
     
     // Generate floating hearts on mount
     useEffect(() => {
@@ -126,7 +126,7 @@ const Invitation = () => {
             
             return () => clearInterval(interval);
         }
-    }, [showSlideshow, reasons.length]);
+    }, [showSlideshow]);
 
     const handleClickYes = () => {
         setIsEnvelopeOpen(true);
