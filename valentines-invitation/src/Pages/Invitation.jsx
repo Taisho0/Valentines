@@ -59,7 +59,7 @@ const Invitation = () => {
                     size: Math.random() * 20 + 30
                 };
                 setFallingHearts(prev => [...prev, newHeart]);
-            }, 1000);
+            }, 500);
             
             return () => clearInterval(interval);
         }
@@ -187,10 +187,10 @@ const Invitation = () => {
     };
 
     return (
-        <div className='relative w-full min-h-screen flex items-center justify-center p-6 overflow-hidden bg-gradient-to-br from-rose-900 via-pink-800 to-red-900'>
+        <div className='relative w-full min-h-screen flex items-center justify-center p-6 overflow-hidden bg-linear-to-br from-rose-900 via-pink-800 to-red-900'>
             {/* Heart-Catching Game Overlay */}
             {gameActive && (
-                <div className='fixed inset-0 z-50 bg-gradient-to-br from-rose-900 via-pink-800 to-red-900 flex flex-col items-center justify-center'>
+                <div className='fixed inset-0 z-50 bg-linear-to-br from-rose-900 via-pink-800 to-red-900 flex flex-col items-center justify-center'>
                     {/* Game Instructions and Score */}
                     <div className='text-center mb-8 z-10'>
                         <h2 className='font-aegean text-4xl md:text-6xl text-white mb-4 animate-pulse'>
@@ -245,7 +245,7 @@ const Invitation = () => {
             )}
             
             {/* Animated gradient overlay */}
-            <div className='absolute inset-0 bg-gradient-to-br from-pink-500/20 via-transparent to-red-500/20 animate-pulse-slow' />
+            <div className='absolute inset-0 bg-linear-to-br from-pink-500/20 via-transparent to-red-500/20 animate-pulse-slow' />
             
             {/* Floating hearts background */}
             <div className='absolute inset-0 overflow-hidden pointer-events-none'>
@@ -268,7 +268,7 @@ const Invitation = () => {
 
             {/* Main card - Envelope style */}
             <div className={`relative z-10 transition-all duration-700 ${isEnvelopeOpen ? 'scale-110 rotate-2' : 'scale-100'}`}>
-                <div className='bg-gradient-to-br from-rose-100 to-pink-50 p-10 md:p-16 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] border-4 border-red-300/50 max-w-2xl w-full relative overflow-hidden'>
+                <div className='bg-linear-to-br from-rose-100 to-pink-50 p-10 md:p-16 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] border-4 border-red-300/50 max-w-2xl w-full relative overflow-hidden'>
                     
                     {/* Decorative corner hearts */}
                     <div className='absolute top-4 left-4 text-4xl text-red-400 animate-pulse'>❤️</div>
@@ -280,7 +280,7 @@ const Invitation = () => {
                     <div className='relative z-10'>
                         <div className='text-center mb-8'>
                             <div className='text-7xl md:text-9xl mb-6 animate-bounce-slow'>💌</div>
-                            <h1 className='font-aegean text-5xl md:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-pink-500 to-red-600 mb-4 leading-tight'>
+                            <h1 className='font-aegean text-5xl md:text-7xl text-transparent bg-clip-text bg-linear-to-r from-red-600 via-pink-500 to-red-600 mb-4 leading-tight'>
                                 Be My Valentine?
                             </h1>
                             <p className='text-rose-800 text-lg md:text-xl font-light italic'>
@@ -295,31 +295,31 @@ const Invitation = () => {
                         </div>
                         
                         {/* Countdown Timer */}
-                        <div className='bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm rounded-2xl p-6 mb-10 border-2 border-red-300'>
+                        <div className='bg-linear-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm rounded-2xl p-6 mb-10 border-2 border-red-300'>
                             <p className='text-rose-900 text-center text-xs md:text-sm font-semibold mb-3 uppercase tracking-wider'>
                                 ⏰ Time Until Our Date
                             </p>
                             <div className='flex justify-center gap-2 md:gap-4'>
                                 <div className='flex flex-col items-center'>
-                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-15 countdown-flip'>
                                         <span className='text-2xl md:text-4xl font-bold text-red-600'>{countdown.days}</span>
                                     </div>
                                     <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Days</span>
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-15 countdown-flip'>
                                         <span className='text-2xl md:text-4xl font-bold text-pink-600'>{countdown.hours}</span>
                                     </div>
                                     <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Hours</span>
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-15 countdown-flip'>
                                         <span className='text-2xl md:text-4xl font-bold text-red-500'>{countdown.minutes}</span>
                                     </div>
                                     <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Mins</span>
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-[60px] countdown-flip'>
+                                    <div className='bg-white/80 rounded-xl px-3 py-2 md:px-4 md:py-3 shadow-lg min-w-15 countdown-flip'>
                                         <span className='text-2xl md:text-4xl font-bold text-pink-500'>{countdown.seconds}</span>
                                     </div>
                                     <span className='text-xs md:text-sm text-rose-800 mt-1 font-medium'>Secs</span>
@@ -335,7 +335,7 @@ const Invitation = () => {
                                     transform: `scale(${yesButtonSize})`,
                                     transition: 'all 0.3s ease'
                                 }}
-                                className='relative group overflow-hidden bg-gradient-to-r from-red-500 via-pink-500 to-red-500 hover:from-red-600 hover:via-pink-600 hover:to-red-600 text-white font-bold py-4 px-12 rounded-full shadow-2xl hover:shadow-red-500/50 active:scale-95 transition-all duration-300'
+                                className='relative group overflow-hidden bg-linear-to-r from-red-500 via-pink-500 to-red-500 hover:from-red-600 hover:via-pink-600 hover:to-red-600 text-white font-bold py-4 px-12 rounded-full shadow-2xl hover:shadow-red-500/50 active:scale-95 transition-all duration-300'
                             >
                                 <span className='relative z-10 text-2xl md:text-3xl flex items-center gap-3'>
                                     Yes! 💖
@@ -368,7 +368,7 @@ const Invitation = () => {
             {/* "Reasons I Love You" Slideshow */}
             {showSlideshow && (
                 <div className="fixed inset-0 z-40 flex items-center justify-center p-6 bg-black/60 backdrop-blur-lg animate-fadeIn">
-                    <div className="bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 p-8 md:p-12 rounded-[2rem] shadow-2xl max-w-2xl w-full relative overflow-hidden border-4 border-red-300">
+                    <div className="bg-linear-to-br from-rose-50 via-pink-50 to-red-50 p-8 md:p-12 rounded-4xl shadow-2xl max-w-2xl w-full relative overflow-hidden border-4 border-red-300">
                         {/* Decorative hearts */}
                         <div className='absolute top-4 left-4 text-3xl animate-pulse'>💕</div>
                         <div className='absolute top-4 right-4 text-3xl animate-pulse' style={{ animationDelay: '0.5s' }}>💕</div>
@@ -376,7 +376,7 @@ const Invitation = () => {
                         <div className='absolute bottom-4 right-4 text-3xl animate-pulse' style={{ animationDelay: '1.5s' }}>💕</div>
                         
                         <div className='relative z-10'>
-                            <h3 className='font-aegean text-4xl md:text-5xl text-center bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-8'>
+                            <h3 className='font-aegean text-4xl md:text-5xl text-center bg-linear-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-8'>
                                 Reasons I Love You
                             </h3>
                             
@@ -435,7 +435,7 @@ const Invitation = () => {
             {/* Success Modal - Love Letter */}
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-lg animate-fadeIn">
-                    <div className="bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 p-10 md:p-14 rounded-[3rem] shadow-2xl max-w-2xl w-full text-center border-8 border-red-400 relative overflow-hidden transform animate-scaleIn">
+                    <div className="bg-linear-to-br from-rose-50 via-pink-50 to-red-50 p-10 md:p-14 rounded-[3rem] shadow-2xl max-w-2xl w-full text-center border-8 border-red-400 relative overflow-hidden transform animate-scaleIn">
                         
                         {/* Decorative elements */}
                         <div className='absolute inset-0 bg-[url("data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M10 0L11 9L20 10L11 11L10 20L9 11L0 10L9 9Z" fill="%23ff69b4" fill-opacity="0.1"/%3E%3C/svg%3E")] opacity-30' />
@@ -445,7 +445,7 @@ const Invitation = () => {
                                 💝
                             </div>
                             
-                            <h2 className="font-aegean text-5xl md:text-6xl bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-6 leading-tight">
+                            <h2 className="font-aegean text-5xl md:text-6xl bg-linear-to-r from-red-600 to-pink-600 bg-clip-text text-transparent mb-6 leading-tight">
                                 It's a Date!
                             </h2>
                             
@@ -463,7 +463,7 @@ const Invitation = () => {
                             
                             <button 
                                 onClick={() => setShowModal(false)}
-                                className="w-full md:w-auto px-12 py-5 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-full font-bold text-xl shadow-2xl hover:shadow-red-500/50 active:scale-95 transition-all duration-300"
+                                className="w-full md:w-auto px-12 py-5 bg-linear-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-full font-bold text-xl shadow-2xl hover:shadow-red-500/50 active:scale-95 transition-all duration-300"
                             >
                                 See you soon, love! 💌
                             </button>
