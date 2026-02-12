@@ -225,8 +225,7 @@ const Invitation = () => {
                                     animation: `fall-heart ${heart.speed}s linear forwards`,
                                     top: '-50px',
                                     zIndex: 10,
-                                    pointerEvents: 'auto',
-                                    userSelect: 'none'
+                                    pointerEvents: 'auto'
                                 }}
                             >
                                 ❤️
