@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd valentines-invitation && npm run build",
+  "outputDirectory": "valentines-invitation/dist",
+  "installCommand": "cd valentines-invitation && npm install"
+}
