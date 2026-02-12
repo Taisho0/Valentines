@@ -215,7 +215,7 @@ const Invitation = () => {
                                     catchHeart(heart.id);
                                 }}
                                 onTouchStart={(e) => {
-                                    e.preventDefault();
+                                    e.stopPropagation();
                                     catchHeart(heart.id);
                                 }}
                                 className='absolute cursor-pointer active:scale-150 active:opacity-50 transition-transform animate-fall-heart select-none'
