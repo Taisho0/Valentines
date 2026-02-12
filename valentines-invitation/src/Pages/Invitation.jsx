@@ -211,7 +211,7 @@ const Invitation = () => {
                                 key={heart.id}
                                 id={`falling-heart-${heart.id}`}
                                 onClick={() => catchHeart(heart.id)}
-                                className='absolute cursor-pointer hover:scale-125 transition-transform animate-fall-heart'
+                                className='absolute cursor-pointer active:scale-150 active:opacity-50 transition-transform animate-fall-heart'
                                 style={{
                                     left: `${heart.left}%`,
                                     fontSize: `${heart.size}px`,
