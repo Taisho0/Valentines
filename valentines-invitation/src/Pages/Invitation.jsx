@@ -59,7 +59,7 @@ const Invitation = () => {
                     size: Math.random() * 20 + 30
                 };
                 setFallingHearts(prev => [...prev, newHeart]);
-            }, 500);
+            }, 200);
             
             return () => clearInterval(interval);
         }
@@ -210,13 +210,23 @@ const Invitation = () => {
                             <div
                                 key={heart.id}
                                 id={`falling-heart-${heart.id}`}
-                                onClick={() => catchHeart(heart.id)}
-                                className='absolute cursor-pointer active:scale-150 active:opacity-50 transition-transform animate-fall-heart'
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    catchHeart(heart.id);
+                                }}
+                                onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    catchHeart(heart.id);
+                                }}
+                                className='absolute cursor-pointer active:scale-150 active:opacity-50 transition-transform animate-fall-heart select-none'
                                 style={{
                                     left: `${heart.left}%`,
                                     fontSize: `${heart.size}px`,
                                     animation: `fall-heart ${heart.speed}s linear forwards`,
-                                    top: '-50px'
+                                    top: '-50px',
+                                    zIndex: 10,
+                                    pointerEvents: 'auto',
+                                    userSelect: 'none'
                                 }}
                             >
                                 ❤️
