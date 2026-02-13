@@ -66,8 +66,8 @@ const Invitation = () => {
                     newHearts.push({
                         id: `heart-${heartIdCounter.current++}`,
                         left: Math.random() * 90 + 5,
-                        speed: Math.random() * 2 + 3, // Faster fall speed: 3-5 seconds
-                        size: Math.random() * 25 + 35 // Slightly bigger hearts: 35-60px
+                        speed: Math.random() * 2 + 3, // Fall animation duration: 3-5 seconds
+                        size: Math.random() * 25 + 35 // Bigger hearts: 35-60px (easier to click)
                     });
                 }
                 setFallingHearts(prev => [...prev, ...newHearts]);
