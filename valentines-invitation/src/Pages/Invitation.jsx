@@ -51,13 +51,14 @@ const Invitation = () => {
     // Heart-catching game: Generate falling hearts FAST
     useEffect(() => {
         if (gameActive && !gameCompleted) {
+            let heartIdCounter = 0;
             const interval = setInterval(() => {
                 // Sometimes spawn 2 hearts at once for more density
-                const heartsToSpawn = Math.random() > 0.7 ? 2 : 1;
+                const spawnCount = Math.random() > 0.7 ? 2 : 1;
                 
-                for (let i = 0; i < heartsToSpawn; i++) {
+                for (let i = 0; i < spawnCount; i++) {
                     const newHeart = {
-                        id: Date.now() + Math.random(),
+                        id: Date.now() + Math.random() + heartIdCounter++,
                         left: Math.random() * 90 + 5,
                         speed: Math.random() * 2 + 3, // Faster fall speed: 3-5 seconds
                         size: Math.random() * 25 + 35 // Slightly bigger hearts: 35-60px
