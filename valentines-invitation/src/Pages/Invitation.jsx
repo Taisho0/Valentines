@@ -59,7 +59,7 @@ const Invitation = () => {
                     size: Math.random() * 20 + 30
                 };
                 setFallingHearts(prev => [...prev, newHeart]);
-            }, 500);
+            }, 100);
             
             return () => clearInterval(interval);
         }
@@ -290,7 +290,7 @@ const Invitation = () => {
 
                         <div className='bg-white/60 backdrop-blur-sm rounded-2xl p-6 mb-6 border-2 border-red-200'>
                             <p className='text-rose-900 text-center text-sm md:text-base font-medium tracking-wide'>
-                                📅 February 14, 2026 • 7:00 PM
+                                📅 February 14, 2026 • 8:00 AM
                             </p>
                         </div>
                         
@@ -465,7 +465,7 @@ const Invitation = () => {
                                 onClick={() => setShowModal(false)}
                                 className="w-full md:w-auto px-12 py-5 bg-linear-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-full font-bold text-xl shadow-2xl hover:shadow-red-500/50 active:scale-95 transition-all duration-300"
                             >
-                                See you soon, love! 💌
+                                See you soon, Mahang ko! 💌
                             </button>
                         </div>
                     </div>
