@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import confetti from 'canvas-confetti';
 
 // Reasons for the slideshow
@@ -15,6 +15,9 @@ const reasons = [
     "Your presence brings me peace 🕊️",
     "I fall for you more every day 💖"
 ];
+
+// Heart rain game constants
+const DOUBLE_SPAWN_THRESHOLD = 0.7; // 30% chance to spawn 2 hearts at once
 
 const Invitation = () => {
     const [noButtonSize, setNoButtonSize] = useState(1);
@@ -36,6 +39,9 @@ const Invitation = () => {
     // Countdown timer state
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     
+    // Ref for unique heart IDs
+    const heartIdCounter = useRef(0);
+    
     // Generate floating hearts on mount
     useEffect(() => {
         const heartArray = Array.from({ length: 15 }, (_, i) => ({
@@ -48,18 +54,24 @@ const Invitation = () => {
         setHearts(heartArray);
     }, []);
     
-    // Heart-catching game: Generate falling hearts
+    // Heart-catching game: Generate falling hearts FAST
     useEffect(() => {
         if (gameActive && !gameCompleted) {
             const interval = setInterval(() => {
-                const newHeart = {
-                    id: Date.now() + Math.random(),
-                    left: Math.random() * 90 + 5,
-                    speed: Math.random() * 3 + 2,
-                    size: Math.random() * 20 + 30
-                };
-                setFallingHearts(prev => [...prev, newHeart]);
-            }, 100);
+                // Sometimes spawn 2 hearts at once for more density
+                const spawnCount = Math.random() > DOUBLE_SPAWN_THRESHOLD ? 2 : 1;
+                
+                const newHearts = [];
+                for (let i = 0; i < spawnCount; i++) {
+                    newHearts.push({
+                        id: `heart-${heartIdCounter.current++}`,
+                        left: Math.random() * 90 + 5,
+                        speed: Math.random() * 2 + 3, // Fall animation duration: 3-5 seconds
+                        size: Math.random() * 25 + 35 // Bigger hearts: 35-60px (easier to click)
+                    });
+                }
+                setFallingHearts(prev => [...prev, ...newHearts]);
+            }, 80); // MUCH faster: new heart every 80ms (was 100ms)
             
             return () => clearInterval(interval);
         }
