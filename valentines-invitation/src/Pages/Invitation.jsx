@@ -58,15 +58,16 @@ const Invitation = () => {
                 // Sometimes spawn 2 hearts at once for more density
                 const spawnCount = Math.random() > 0.7 ? 2 : 1;
                 
+                const newHearts = [];
                 for (let i = 0; i < spawnCount; i++) {
-                    const newHeart = {
+                    newHearts.push({
                         id: `heart-${heartIdCounter.current++}`,
                         left: Math.random() * 90 + 5,
                         speed: Math.random() * 2 + 3, // Faster fall speed: 3-5 seconds
                         size: Math.random() * 25 + 35 // Slightly bigger hearts: 35-60px
-                    };
-                    setFallingHearts(prev => [...prev, newHeart]);
+                    });
                 }
+                setFallingHearts(prev => [...prev, ...newHearts]);
             }, 80); // MUCH faster: new heart every 80ms (was 100ms)
             
             return () => clearInterval(interval);
