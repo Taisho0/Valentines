@@ -16,6 +16,9 @@ const reasons = [
     "I fall for you more every day 💖"
 ];
 
+// Heart rain game constants
+const DOUBLE_SPAWN_THRESHOLD = 0.7; // 30% chance to spawn 2 hearts at once
+
 const Invitation = () => {
     const [noButtonSize, setNoButtonSize] = useState(1);
     const [yesButtonSize, setYesButtonSize] = useState(1);
@@ -56,7 +59,7 @@ const Invitation = () => {
         if (gameActive && !gameCompleted) {
             const interval = setInterval(() => {
                 // Sometimes spawn 2 hearts at once for more density
-                const spawnCount = Math.random() > 0.7 ? 2 : 1;
+                const spawnCount = Math.random() > DOUBLE_SPAWN_THRESHOLD ? 2 : 1;
                 
                 const newHearts = [];
                 for (let i = 0; i < spawnCount; i++) {
