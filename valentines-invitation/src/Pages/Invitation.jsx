@@ -71,7 +71,7 @@ const Invitation = () => {
                     });
                 }
                 setFallingHearts(prev => [...prev, ...newHearts]);
-            }, 100); // MUCH faster: new heart every 80ms (was 100ms)
+            }, 90); // MUCH faster: new heart every 80ms (was 100ms)
             
             return () => clearInterval(interval);
         }
