@@ -98,7 +98,7 @@ const Invitation = () => {
     // Countdown timer effect
     useEffect(() => {
         const calculateCountdown = () => {
-            const targetDate = new Date('2026-02-14T19:00:00');
+            const targetDate = new Date('2026-02-15T19:00:00');
             const now = new Date();
             const difference = targetDate - now;
             
@@ -299,7 +299,7 @@ const Invitation = () => {
 
                         <div className='bg-white/60 backdrop-blur-sm rounded-2xl p-6 mb-6 border-2 border-red-200'>
                             <p className='text-rose-900 text-center text-sm md:text-base font-medium tracking-wide'>
-                                📅 February 14, 2026 • 8:00 AM
+                                📅 February 15, 2026 • 8:00 AM
                             </p>
                         </div>
                         
