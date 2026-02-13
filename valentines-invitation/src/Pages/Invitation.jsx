@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import confetti from 'canvas-confetti';
 
 // Reasons for the slideshow
@@ -36,6 +36,9 @@ const Invitation = () => {
     // Countdown timer state
     const [countdown, setCountdown] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     
+    // Ref for unique heart IDs
+    const heartIdCounter = useRef(0);
+    
     // Generate floating hearts on mount
     useEffect(() => {
         const heartArray = Array.from({ length: 15 }, (_, i) => ({
@@ -51,14 +54,13 @@ const Invitation = () => {
     // Heart-catching game: Generate falling hearts FAST
     useEffect(() => {
         if (gameActive && !gameCompleted) {
-            let heartIdCounter = 0;
             const interval = setInterval(() => {
                 // Sometimes spawn 2 hearts at once for more density
                 const spawnCount = Math.random() > 0.7 ? 2 : 1;
                 
                 for (let i = 0; i < spawnCount; i++) {
                     const newHeart = {
-                        id: Date.now() + Math.random() + heartIdCounter++,
+                        id: `heart-${heartIdCounter.current++}`,
                         left: Math.random() * 90 + 5,
                         speed: Math.random() * 2 + 3, // Faster fall speed: 3-5 seconds
                         size: Math.random() * 25 + 35 // Slightly bigger hearts: 35-60px
